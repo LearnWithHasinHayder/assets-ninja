@@ -11,21 +11,44 @@ Text Domain: assetsninja
 Domain Path: /languages/
 */
 
-class AssetsNinja{
+define( "ASN_ASSETS_DIR", plugin_dir_url( __FILE__ ) . "assets/" );
+define( "ASN_ASSETS_PUBLIC_DIR", plugin_dir_url( __FILE__ ) . "assets/public" );
+define( "ASN_ASSETS_ADMIN_DIR", plugin_dir_url( __FILE__ ) . "assets/admin" );
+define( 'ASN_VERSION', time() );
 
-	function __construct() {
+class AssetsNinja {
 
-		add_action('plugins_loaded',array($this,'load_textdomain'));
-		add_action('wp_enqueue_scripts',array($this,'load_front_assets'));
-	}
+    private $version;
 
-	function load_front_assets(){
+    function __construct() {
 
-	}
+        $this->version = time();
 
-	function load_textdomain(){
-		load_plugin_textdomain('assetsninja',false,plugin_dir_url(__FILE__)."/languages");
-	}
+        add_action( 'plugins_loaded', array( $this, 'load_textdomain' ) );
+        add_action( 'wp_enqueue_scripts', array( $this, 'load_front_assets' ) );
+        add_action( 'wp_enqueue_scripts', array( $this, 'load_front_assets' ) );
+    }
+
+    function load_front_assets() {
+        wp_enqueue_style('asn-main-css',ASN_ASSETS_PUBLIC_DIR."/css/main.css",null,$this->version);
+
+        wp_enqueue_script( 'asn-main-js', ASN_ASSETS_PUBLIC_DIR . "/js/main.js", array(
+            'jquery',
+            'assetsninja-another-js'
+        ), $this->version, true );
+
+        wp_enqueue_script( 'asn-another-js', ASN_ASSETS_PUBLIC_DIR . "/js/another.js", array(
+            'jquery',
+            'assetsninja-more-js'
+        ), $this->version, true );
+
+        wp_enqueue_script( 'asn-more-js', ASN_ASSETS_PUBLIC_DIR . "/js/more.js", array( 'jquery' ), $this->version, true );
+    }
+
+
+    function load_textdomain() {
+        load_plugin_textdomain( 'assetsninja', false, plugin_dir_url( __FILE__ ) . "/languages" );
+    }
 }
 
 new AssetsNinja();
