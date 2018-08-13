@@ -34,15 +34,17 @@ class AssetsNinja {
 
         wp_enqueue_script( 'asn-main-js', ASN_ASSETS_PUBLIC_DIR . "/js/main.js", array(
             'jquery',
-            'assetsninja-another-js'
+            'asn-another-js'
         ), $this->version, true );
 
         wp_enqueue_script( 'asn-another-js', ASN_ASSETS_PUBLIC_DIR . "/js/another.js", array(
             'jquery',
-            'assetsninja-more-js'
+            'asn-more-js'
         ), $this->version, true );
 
         wp_enqueue_script( 'asn-more-js', ASN_ASSETS_PUBLIC_DIR . "/js/more.js", array( 'jquery' ), $this->version, true );
+
+
     }
 
 
