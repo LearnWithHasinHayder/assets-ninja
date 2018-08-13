@@ -44,6 +44,22 @@ class AssetsNinja {
 
         wp_enqueue_script( 'asn-more-js', ASN_ASSETS_PUBLIC_DIR . "/js/more.js", array( 'jquery' ), $this->version, true );
 
+        $data = array(
+            'name'=>'lwhh',
+            'url'=>'https://learnwith.hasinhayder.com'
+        );
+        $moredata = array(
+            'name'=>'LearnWithHasinHayder',
+            'url'=>'https://learnwith.hasinhayder.com/wp/'
+        );
+
+        $translated_strings = array(
+            'greetings'=>__('Hello World','assetsninja')
+        );
+
+        wp_localize_script('asn-more-js','sitedata',$data);
+        wp_localize_script('asn-more-js','moredata',$moredata);
+        wp_localize_script('asn-more-js','translations',$translated_strings);
 
     }
 
