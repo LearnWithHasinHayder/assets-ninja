@@ -27,9 +27,11 @@ class AssetsNinja {
 		add_action('init',array($this,'asn_init'));
 
 		add_action( 'plugins_loaded', array( $this, 'load_textdomain' ) );
-		add_action( 'wp_enqueue_scripts', array( $this, 'load_front_assets' ) );
-		add_action( 'wp_enqueue_scripts', array( $this, 'load_front_assets' ) );
+		add_action( 'wp_enqueue_scripts', array( $this, 'load_front_assets' ),11 );
+		//add_action( 'wp_enqueue_scripts', array( $this, 'load_front_assets' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'load_admin_assets' ) );
+
+		add_shortcode('bgmedia',array($this,'asn_bgmedia_shortcode'));
 	}
 
 	function asn_init(){
@@ -52,8 +54,17 @@ class AssetsNinja {
 	}
 
 	function load_front_assets() {
+		//wp_enqueue_style( 'asn-main-css', ASN_ASSETS_PUBLIC_DIR . "/css/main.css", array('fontawesome-css'), $this->version );
 		wp_enqueue_style( 'asn-main-css', ASN_ASSETS_PUBLIC_DIR . "/css/main.css", null, $this->version );
+		$attachment_image_src = wp_get_attachment_image_src(207,'medium');
 
+		$data = <<<EOD
+		#bgmedia{
+			background-image:url($attachment_image_src[0]);
+		}
+EOD;
+
+		wp_add_inline_style('asn-main-css',$data);
 		/*wp_enqueue_script( 'asn-main-js', ASN_ASSETS_PUBLIC_DIR . "/js/main.js", array(
 			'jquery',
 			'asn-another-js'
@@ -93,12 +104,32 @@ class AssetsNinja {
 		wp_localize_script( 'asn-more-js', 'moredata', $moredata );
 		wp_localize_script( 'asn-more-js', 'translations', $translated_strings );
 
+		$data = <<<EOD
+alert('Hello From Inline Script');
+EOD;
+
+		wp_add_inline_script('asn-more-js',$data);
+
 	}
 
 
 	function load_textdomain() {
 		load_plugin_textdomain( 'assetsninja', false, plugin_dir_url( __FILE__ ) . "/languages" );
 	}
+
+	function asn_bgmedia_shortcode($attributes){
+
+		$shortcode_output = <<<EOD
+
+<div id="bgmedia"></div>
+EOD;
+		return $shortcode_output;
+
+	}
+
+
+
+
 
 
 }
